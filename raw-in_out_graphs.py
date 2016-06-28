@@ -14,6 +14,7 @@ import sys
 
 STATIONS = 145+1 # So as to 1-index
 HOURS = 24 # So as to have first number be the row index
+SET_OF_STATIONS = set([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145])
 
 def initialize_matrix():
 	matrix = []
@@ -82,6 +83,9 @@ out_matrix = initialize_matrix()
 in_dates = []
 out_dates = []
 
+in_stations_represented = []
+out_stations_represented = []
+
 startProgress("Processing data")
 
 with open('Data/hubway2/hubway_trips.csv', 'rb') as csvfile:
@@ -93,6 +97,10 @@ with open('Data/hubway2/hubway_trips.csv', 'rb') as csvfile:
 		try:
 			start_station = int(row[5]) # Get start station ID number
 			end_station = int(row[7]) # Get end station ID number
+
+			in_stations_represented.append(end_station)
+			out_stations_represented.append(start_station)
+
 			start_time_string = row[4] # Get start date and time
 			end_time_string = row[6] # Get end date and time
 			start_datetime = datetime.strptime(start_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
@@ -125,6 +133,23 @@ average_matrix(in_matrix, len(in_date_set))
 average_matrix(out_matrix, len(out_date_set))
 
 endProgress() # Finish progress bar
+
+in_station_set = set(in_stations_represented)
+out_station_set = set(out_stations_represented)
+
+in_sets_missing = SET_OF_STATIONS - in_station_set
+out_sets_missing = SET_OF_STATIONS - out_station_set
+
+print("")
+print("Let's start with some statistics:")
+print("The number of trips is "+str(number_of_trips))
+print("The number of days for which there are outbound trips are "+str(len(out_date_set)))
+print("The number of days for which there are inbound trips are "+str(len(in_date_set)))
+print("Outgoing stations not represented in the data are: ")
+print(list(out_sets_missing))
+print("Incoming stations not represented in the data are: ")
+print(list(in_sets_missing))
+print("")
 
 continue_running = True
 while continue_running:
