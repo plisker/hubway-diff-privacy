@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 STATIONS = 145+1 # So as to 1-index
 HOURS = 24 # So as to have first number be the row index
 
+print("Processing the data... please be patient. It'll take around two minutes.")
 
 def initialize_matrix():
 	matrix = []
@@ -81,9 +82,33 @@ out_date_set = set(out_dates)
 average_matrix(in_matrix, len(in_date_set)/4)
 average_matrix(out_matrix, len(out_date_set)/4)
 
-print(len(in_date_set))
-print(len(out_date_set))
+# print(len(in_date_set))
+# print(len(out_date_set))
 
-plot_station(38, in_matrix, out_matrix)
+def plot_again():
+	proceed = raw_input("Would you like to plot another station? y/n ")
+	if proceed is "y":
+		return 0
+	elif proceed is "n":
+		return 1
+	else:
+		print("Sorry, didn't catch that. Let's try again.")
+		plot_again()
+
+
+continue_running = True
+while continue_running:
+	try:
+		station = input("What station do you want to plot? ")
+	except:
+		print("That isn't a valid number. Please try again!")
+		continue
+	plot_station(station, in_matrix, out_matrix)
+	test = plot_again()
+	if test is 0:
+		continue
+	else:
+		break
+		
 
 
