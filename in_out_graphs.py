@@ -10,11 +10,12 @@ import numpy as np
 import csv
 from datetime import datetime
 import matplotlib.pyplot as plt
+import sys
 
 STATIONS = 145+1 # So as to 1-index
 HOURS = 24 # So as to have first number be the row index
+NUMBER_OF_TRIPS = 1579025
 
-print("Processing the data... please be patient. It'll take around two minutes.")
 
 def initialize_matrix():
 	matrix = []
@@ -45,10 +46,41 @@ def plot_station(station_id, bikes_in, bikes_out):
 	plt.plot(hours_axis, station_in)
 	plt.show()
 
+def plot_again():
+	proceed = raw_input("Would you like to plot another station? y/n ")
+	if proceed is "y":
+		return 0
+	elif proceed is "n":
+		return 1
+	else:
+		print("Sorry, didn't catch that. Let's try again.")
+		plot_again()
+
+def startProgress(title):
+    global progress_x
+    sys.stdout.write(title + ": [" + "-"*40 + "]" + chr(8)*41)
+    sys.stdout.flush()
+    progress_x = 0
+
+def progress(x):
+    global progress_x
+    x = int(x * 40 // 100)
+    sys.stdout.write("#" * (x - progress_x))
+    sys.stdout.flush()
+    progress_x = x
+
+def endProgress():
+    sys.stdout.write("#" * (40 - progress_x) + "]\n")
+    sys.stdout.flush()
+
+time_counter = 0
+
 in_matrix = initialize_matrix()
 out_matrix = initialize_matrix()
 in_dates = []
 out_dates = []
+
+startProgress("Processing data")
 
 with open('../hubway2/hubway_trips.csv', 'rb') as csvfile:
 	trips = csv.reader(csvfile)
@@ -75,35 +107,32 @@ with open('../hubway2/hubway_trips.csv', 'rb') as csvfile:
 		out_dates.append(start_date)
 		in_dates.append(end_date)
 
+		time_counter+=1
+		percentage = (time_counter/float(NUMBER_OF_TRIPS))*100
+
+		progress(percentage)
+
+
 in_date_set = set(in_dates)
 out_date_set = set(out_dates)
 
-# TODO: DELETE the /4
-average_matrix(in_matrix, len(in_date_set)/4)
-average_matrix(out_matrix, len(out_date_set)/4)
+average_matrix(in_matrix, len(in_date_set))
+average_matrix(out_matrix, len(out_date_set))
+
+endProgress()
 
 # print(len(in_date_set))
 # print(len(out_date_set))
-
-def plot_again():
-	proceed = raw_input("Would you like to plot another station? y/n ")
-	if proceed is "y":
-		return 0
-	elif proceed is "n":
-		return 1
-	else:
-		print("Sorry, didn't catch that. Let's try again.")
-		plot_again()
 
 
 continue_running = True
 while continue_running:
 	try:
 		station = input("What station do you want to plot? ")
+		plot_station(station, in_matrix, out_matrix)
 	except:
 		print("That isn't a valid number. Please try again!")
 		continue
-	plot_station(station, in_matrix, out_matrix)
 	test = plot_again()
 	if test is 0:
 		continue
