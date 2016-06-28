@@ -56,6 +56,7 @@ def plot_again():
 		print("Sorry, didn't catch that. Let's try again.")
 		plot_again()
 
+# Progress bar with credit to http://stackoverflow.com/a/6169274 #
 def startProgress(title):
     global progress_x
     sys.stdout.write(title + ": [" + "-"*40 + "]" + chr(8)*41)
