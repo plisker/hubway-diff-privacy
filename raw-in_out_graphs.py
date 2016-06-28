@@ -14,8 +14,6 @@ import sys
 
 STATIONS = 145+1 # So as to 1-index
 HOURS = 24 # So as to have first number be the row index
-NUMBER_OF_TRIPS = 1579025
-
 
 def initialize_matrix():
 	matrix = []
@@ -37,13 +35,15 @@ def plot_station(station_id, bikes_in, bikes_out):
 
 	station_out = bikes_out[station_id]
 	del station_out[-1]
-	print(station_out)
+	print("Bikes out: ", station_out)
 	plt.plot(hours_axis, station_out)
+	station_out.append(station_id)
 
 	station_in = bikes_in[station_id]
 	del station_in[-1]
-	print(station_in)
+	print("Bikes in: ", station_in)
 	plt.plot(hours_axis, station_in)
+	station_in.append(station_id)
 	plt.show()
 
 def plot_again():
@@ -75,6 +75,7 @@ def endProgress():
     sys.stdout.flush()
 
 row_counter = 0
+number_of_trips = 0
 
 in_matrix = initialize_matrix()
 out_matrix = initialize_matrix()
@@ -83,7 +84,10 @@ out_dates = []
 
 startProgress("Processing data")
 
-with open('../hubway2/hubway_trips.csv', 'rb') as csvfile:
+with open('Data/hubway2/hubway_trips.csv', 'rb') as csvfile:
+	number_of_trips = sum(1 for line in csvfile)
+	csvfile.seek(0) # Go back to top of file for next loop
+
 	trips = csv.reader(csvfile)
 	for row in trips:
 		try:
@@ -102,15 +106,15 @@ with open('../hubway2/hubway_trips.csv', 'rb') as csvfile:
 			out_matrix[start_station][start_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
 			in_matrix[end_station][end_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
 
-			start_date = datetime.strftime(start_datetime, "%x")
-			end_date = datetime.strftime(end_datetime, "%x")
+			start_date = str(datetime.strftime(start_datetime, "%x"))
+			end_date = str(datetime.strftime(end_datetime, "%x"))
 
 			out_dates.append(start_date)
 			in_dates.append(end_date)
 
 		# increase progress bar as appropriately
 		row_counter += 1
-		percentage = (row_counter/float(NUMBER_OF_TRIPS))*100
+		percentage = (row_counter/float(number_of_trips))*100
 		progress(percentage)
 
 
@@ -136,5 +140,4 @@ while continue_running:
 	else:
 		break
 		
-
 
