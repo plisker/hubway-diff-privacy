@@ -74,7 +74,7 @@ def endProgress():
     sys.stdout.write("#" * (40 - progress_x) + "]\n")
     sys.stdout.flush()
 
-time_counter = 0
+row_counter = 0
 
 in_matrix = initialize_matrix()
 out_matrix = initialize_matrix()
@@ -98,33 +98,29 @@ with open('../hubway2/hubway_trips.csv', 'rb') as csvfile:
 
 		# Note: station 145 will be in index 145 (i.e., first row will be empty, since there is no station 0)
 		# 1-indexing for future clarity
+		if start_datetime.isoweekday() and end_datetime.isoweekday() in range(1, 6):
+			out_matrix[start_station][start_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
+			in_matrix[end_station][end_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
 
-		out_matrix[start_station][start_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
-		in_matrix[end_station][end_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
+			start_date = datetime.strftime(start_datetime, "%x")
+			end_date = datetime.strftime(end_datetime, "%x")
 
-		start_date = datetime.strftime(start_datetime, "%x")
-		end_date = datetime.strftime(end_datetime, "%x")
+			out_dates.append(start_date)
+			in_dates.append(end_date)
 
-		out_dates.append(start_date)
-		in_dates.append(end_date)
-
-		time_counter+=1
-		percentage = (time_counter/float(NUMBER_OF_TRIPS))*100
-
+		# increase progress bar as appropriately
+		row_counter += 1
+		percentage = (row_counter/float(NUMBER_OF_TRIPS))*100
 		progress(percentage)
 
 
-in_date_set = set(in_dates)
+in_date_set = set(in_dates) # Create set to get number of unique dates for the sake of creating averages
 out_date_set = set(out_dates)
 
 average_matrix(in_matrix, len(in_date_set))
 average_matrix(out_matrix, len(out_date_set))
 
-endProgress()
-
-# print(len(in_date_set))
-# print(len(out_date_set))
-
+endProgress() # Finish progress bar
 
 continue_running = True
 while continue_running:
