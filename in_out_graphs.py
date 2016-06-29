@@ -8,7 +8,7 @@
 
 import numpy as np
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import sys
 
@@ -86,27 +86,68 @@ out_dates = []
 in_stations_represented = []
 out_stations_represented = []
 
+raw = True
+
+while True:
+	raw_or_synthetic = raw_input("Would you like to analyze the raw or synthetic data? Type 'r' or 's'. ")
+	if raw_or_synthetic is "r":
+		break
+	elif raw_or_synthetic is "s":
+		raw = False
+		break
+	else:
+		print("Sorry, that is not an option. Please try again!")
+
+file = ""
+
+if raw:
+	print("Raw data will be analyzed!")
+	file = "Data/hubway2/hubway_trips.csv"
+
+while not raw:
+	synthetic_file = raw_input("Which synthetic data would you like to analyze? 0.2, 0.3, or 0.6? ")
+	if synthetic_file not in ["0.2", "0.3", "0.6"]:
+		print("That is not an option. Please try again!")
+	else:
+		file = "Data/8-diffprivTest/"+synthetic_file+"-hubway-synthetic-our.csv"
+		break
 startProgress("Processing data")
 
-with open('Data/hubway2/hubway_trips.csv', 'rb') as csvfile:
+with open(file, 'rb') as csvfile:
 	number_of_trips = sum(1 for line in csvfile)
 	csvfile.seek(0) # Go back to top of file for next loop
 
 	trips = csv.reader(csvfile)
 	for row in trips:
-		try:
-			start_station = int(row[5]) # Get start station ID number
-			end_station = int(row[7]) # Get end station ID number
+		if raw:
+			try:
+				start_station = int(row[5]) # Get start station ID number
+				end_station = int(row[7]) # Get end station ID number
 
-			in_stations_represented.append(end_station)
-			out_stations_represented.append(start_station)
+				in_stations_represented.append(end_station)
+				out_stations_represented.append(start_station)
 
-			start_time_string = row[4] # Get start date and time
-			end_time_string = row[6] # Get end date and time
-			start_datetime = datetime.strptime(start_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
-			end_datetime = datetime.strptime(end_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
-		except:
-			continue # If error (e.g. if header row, or if some information is missing, go to next row)
+				start_time_string = row[4] # Get start date and time
+				end_time_string = row[6] # Get end date and time
+				start_datetime = datetime.strptime(start_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
+				end_datetime = datetime.strptime(end_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
+			except:
+				continue # If error (e.g. if header row, or if some information is missing, go to next row)
+		
+		elif not raw:
+			try:
+				start_station = int(row[1]) # Get start station ID number
+				end_station = int(row[2]) # Get end station ID number
+
+				in_stations_represented.append(end_station)
+				out_stations_represented.append(start_station)
+
+				start_time_string = row[3] # Get start date and time
+				duration = timedelta(seconds=float(row[4]))
+				start_datetime = datetime.strptime(start_time_string, " %d/%m/%Y %H:%M") # Convert date and time to datetime format
+				end_datetime = start_datetime + duration # Convert date and time to datetime format
+			except:
+				continue # If error (e.g. if header row, or if some information is missing, go to next row)
 
 		# Note: station 145 will be in index 145 (i.e., first row will be empty, since there is no station 0)
 		# 1-indexing for future clarity
@@ -164,5 +205,5 @@ while continue_running:
 		continue
 	else:
 		break
-		
+
 
