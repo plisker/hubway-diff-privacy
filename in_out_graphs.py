@@ -102,7 +102,7 @@ file = ""
 
 if raw:
 	print("Raw data will be analyzed!")
-	file = "Data/hubway2/hubway_trips.csv"
+	file = "Data/hubway-original_post2012/trips_post2012_3iqr.csv"
 
 while not raw:
 	synthetic_file = raw_input("Which synthetic data would you like to analyze? 0.2, 0.3, or 0.6? ")
