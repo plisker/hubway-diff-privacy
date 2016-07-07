@@ -3,3 +3,4 @@ Data/8-diffprivTest/0.3-hubway-synthetic-our.csv
 Data/8-diffprivTest/0.6-hubway-synthetic-our.csv
 Data/hubway2/hubway_stations.csv
 Data/hubway2/hubway_trips.csv
+*.csv
