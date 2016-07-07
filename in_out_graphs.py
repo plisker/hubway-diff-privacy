@@ -231,9 +231,6 @@ for station in SET_OF_STATIONS:
 	in_data.append(arrive)
 	out_data.append(leave)
 
-	print(in_data)
-	print(out_data)
-
 # Start writing the CSV without outliers
 with open('Data/'+filename+'-bikes_in.csv', 'w') as cleaned_file:
     a = csv.writer(cleaned_file, delimiter=',')
