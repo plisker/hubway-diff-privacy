@@ -214,8 +214,8 @@ print("Incoming stations not represented in the data are: ")
 print(list(in_sets_missing))
 print("")
 
-in_data = []
-out_data = []
+in_data = [["",0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]]
+out_data = [["",0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]]
 
 for station in SET_OF_STATIONS:
 
