@@ -11,6 +11,7 @@ import csv
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import sys
+import copy
 
 STATIONS = 145+1 # So as to 1-index
 HOURS = 24 # So as to have first number be the row index
@@ -30,6 +31,23 @@ def average_matrix(matrix, denominator):
 	for i in range(STATIONS):
 		for j in range(HOURS):
 				matrix[i][j] = (matrix[i][j])/float(denominator)
+
+def station_data(station_id, bikes_in, bikes_out):
+	station_out = bikes_out[station_id]
+	del station_out[-1]
+
+	station_in = bikes_in[station_id]
+	del station_in[-1]
+
+	a = copy.deepcopy(station_in)
+	b = copy.deepcopy(station_out)
+
+	x = (a, b)
+
+	station_out.append(station_id)
+	station_in.append(station_id)
+
+	return x
 
 def plot_station(station_id, bikes_in, bikes_out):
 	hours_axis = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
@@ -86,6 +104,8 @@ out_dates = []
 in_stations_represented = []
 out_stations_represented = []
 
+filename = ""
+
 raw = True
 
 while True:
@@ -103,6 +123,7 @@ file = ""
 if raw:
 	print("Raw data will be analyzed!")
 	file = "Data/hubway-original_post2012/trips_post2012_3iqr.csv"
+	filename = "raw"
 
 while not raw:
 	synthetic_file = raw_input("Which synthetic data would you like to analyze? 0.2, 0.3, or 0.6? ")
@@ -110,6 +131,7 @@ while not raw:
 		print("That is not an option. Please try again!")
 	else:
 		file = "Data/8-diffprivTest/"+synthetic_file+"-hubway-synthetic-our.csv"
+		filename = synthetic_file+"_synthetic"
 		break
 startProgress("Processing data")
 
@@ -191,6 +213,37 @@ print(list(out_sets_missing))
 print("Incoming stations not represented in the data are: ")
 print(list(in_sets_missing))
 print("")
+
+in_data = []
+out_data = []
+
+for station in SET_OF_STATIONS:
+
+	try:
+		arrive, leave = station_data(station, in_matrix, out_matrix)
+	except:
+		print(station)
+		continue
+
+	arrive.insert(0, station)
+	leave.insert(0, station)
+
+	in_data.append(arrive)
+	out_data.append(leave)
+
+	print(in_data)
+	print(out_data)
+
+# Start writing the CSV without outliers
+with open('Data/'+filename+'-bikes_in.csv', 'w') as cleaned_file:
+    a = csv.writer(cleaned_file, delimiter=',')
+    data = in_data
+    a.writerows(data)
+
+with open('Data/'+filename+'-bikes_out.csv', 'w') as cleaned_file:
+    a = csv.writer(cleaned_file, delimiter=',')
+    data = out_data
+    a.writerows(data)
 
 continue_running = True
 while continue_running:
