@@ -19,4 +19,4 @@ with open('Data/hubway2/hubway_stations.csv', 'rb') as csvfile:
 			continue # If error (e.g. if header row, or if some information is missing, go to next row)
 		set_of_stations.append(station)
 
-print(set(set_of_stations))
+print(list(set(set_of_stations)))
