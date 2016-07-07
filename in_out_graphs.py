@@ -129,7 +129,7 @@ with open(file, 'rb') as csvfile:
 
 				start_time_string = row[4] # Get start date and time
 				end_time_string = row[6] # Get end date and time
-				start_datetime = datetime.strptime(start_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
+				start_datetime = datetime.strptime(start_time_string, "%Y-%m-%d %H:%M:%S") # Convert date and time to datetime format
 				end_datetime = datetime.strptime(end_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
 			except:
 				continue # If error (e.g. if header row, or if some information is missing, go to next row)
