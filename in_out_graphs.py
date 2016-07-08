@@ -192,8 +192,8 @@ with open(file, 'rb') as csvfile:
 in_date_set = set(in_dates) # Create set to get number of unique dates for the sake of creating averages
 out_date_set = set(out_dates)
 
-average_matrix(in_matrix, len(in_date_set))
-average_matrix(out_matrix, len(out_date_set))
+# average_matrix(in_matrix, len(in_date_set))
+# average_matrix(out_matrix, len(out_date_set))
 
 endProgress() # Finish progress bar
 
