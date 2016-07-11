@@ -16,12 +16,13 @@ import copy
 STATIONS = 145+1 # So as to 1-index
 HOURS = 24 # So as to have first number be the row index
 SET_OF_STATIONS = set([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145])
+X_AXIS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145]
 
 def initialize_matrix():
 	matrix = []
 	for i in range(STATIONS):
 		row = []
-		for j in range(HOURS):
+		for j in range(STATIONS):
 			row.append(0)
 		row.append(i) # Each row will have 24 numbers, 0-indexed: 0-23 are hours, and 24th number is station ID
 		matrix.append(row)
@@ -50,26 +51,19 @@ def station_data(station_id, bikes_in, bikes_out):
 	return x
 
 def plot_station(station_id, bikes_in, bikes_out):
-	hours_axis = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+	# hours_axis = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 
 	station_out = bikes_out[station_id]
 	del station_out[-1]
 	print("Bikes out: ", station_out)
-	plt.plot(hours_axis, station_out)
+	plt.plot(X_AXIS, station_out)
 	station_out.append(station_id)
 
 	station_in = bikes_in[station_id]
 	del station_in[-1]
 	print("Bikes in: ", station_in)
-	plt.plot(hours_axis, station_in)
+	plt.plot(X_AXIS, station_in)
 	station_in.append(station_id)
-
-	plt.xlabel('Hour of Day')
-	plt.ylabel('Number of trips')
-	plt.title("Number of Trips per Hour")
-	plt.axis([0, 24, 0, 1000])
-	plt.grid(True)
-
 	plt.show()
 
 def plot_again():
@@ -181,8 +175,8 @@ with open(file, 'rb') as csvfile:
 		# Note: station 145 will be in index 145 (i.e., first row will be empty, since there is no station 0)
 		# 1-indexing for future clarity
 		if start_datetime.isoweekday() and end_datetime.isoweekday() in range(1, 6):
-			out_matrix[start_station][start_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
-			in_matrix[end_station][end_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
+			out_matrix[start_station][end_station] += 1 # Increase counter to appropriate spot in tracking matrix
+			in_matrix[end_station][start_station] += 1 # Increase counter to appropriate spot in tracking matrix
 
 			start_date = str(datetime.strftime(start_datetime, "%x"))
 			end_date = str(datetime.strftime(end_datetime, "%x"))
