@@ -67,7 +67,6 @@ def plot_station(station_id, bikes_in, bikes_out):
 	plt.xlabel('Hour of Day')
 	plt.ylabel('Number of trips')
 	plt.title("Number of Trips per Hour")
-	plt.axis([0, 24, 0, 1000])
 	plt.grid(True)
 
 	plt.show()
