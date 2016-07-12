@@ -15,7 +15,7 @@ import copy
 
 STATIONS = 145+1 # So as to 1-index
 stationList = [""]
-(stationList.append(i) for i in range(STATIONS))
+[stationList.append(i) for i in range(STATIONS)]
 row_counter = 0
 number_of_trips = 0
 
