@@ -14,7 +14,8 @@ import sys
 import copy
 
 STATIONS = 145+1 # So as to 1-index
-stationList = [i for i in range(STATIONS)]
+stationList = [""]
+(stationList.append(i) for i in range(STATIONS))
 row_counter = 0
 number_of_trips = 0
 
@@ -28,23 +29,6 @@ def initialize_matrix():
 		matrix.append(row)
 	return matrix
 
-
-def station_data(station_id, bikes_in, bikes_out):
-	station_out = bikes_out[station_id]
-	del station_out[-1]
-
-	station_in = bikes_in[station_id]
-	del station_in[-1]
-
-	a = copy.deepcopy(station_in)
-	b = copy.deepcopy(station_out)
-
-	x = (a, b)
-
-	station_out.append(station_id)
-	station_in.append(station_id)
-
-	return x
 
 def processData(file, inMatrix, outMatrix, raw, counter):
 	with open(file, 'rb') as csvfile:
@@ -102,8 +86,20 @@ def writeCSV(filename, inMatrix, outMatrix, rawIn, rawOut):
 	e = c-a
 	f = d-b
 
-	in_data = np.asarray(e)
-	out_data = np.asarray(f)
+	in_data = e.tolist()
+	out_data = f.tolist()
+
+	i = 0
+	for row in in_data:
+		row.insert(0, i)
+		del row[-1]
+		i += 1
+
+	i = 0
+	for row in out_data:
+		row.insert(0, i)
+		del row[-1]
+		i += 1
 
 	in_data.insert(0, stationList)
 	out_data.insert(0, stationList)
