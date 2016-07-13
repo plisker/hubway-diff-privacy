@@ -39,13 +39,13 @@ def processData(file, inMatrix, outMatrix, raw, counter):
 		for row in trips:
 			if raw:
 				try:
-					start_station = int(row[5]) # Get start station ID number
-					end_station = int(row[7]) # Get end station ID number
+					start_station = int(row[0]) # Get start station ID number
+					end_station = int(row[1]) # Get end station ID number
 
-					start_time_string = row[4] # Get start date and time
-					end_time_string = row[6] # Get end date and time
-					start_datetime = datetime.strptime(start_time_string, "%Y-%m-%d %H:%M:%S") # Convert date and time to datetime format
-					end_datetime = datetime.strptime(end_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
+					start_time_string = row[2] # Get start date and time
+					end_time_string = row[4] # Get end date and time
+					start_datetime = datetime.strptime(start_time_string, " %Y-%m-%d %H:%M:%S") # Convert date and time to datetime format
+					end_datetime = datetime.strptime(end_time_string, " %Y-%m-%d %H:%M:%S") # Convert date and time to datetime format
 				except:
 					continue # If error (e.g. if header row, or if some information is missing, go to next row)
 			
@@ -73,7 +73,7 @@ def processData(file, inMatrix, outMatrix, raw, counter):
 
 			# increase progress bar as appropriately
 			counter += 1
-			percentage = (counter/float(4*number_of_trips))*100
+			percentage = (counter/float(11*number_of_trips))*100
 			progress(percentage)
 
 def divideEntries(numerator, denominator):
@@ -133,22 +133,22 @@ def matrixCSV(filename, inMatrix, outMatrix, rawIn, rawOut):
 	g.insert(0, stationList)
 	h.insert(0, stationList)
 
-	with open('Data/diff-'+filename+'-bikes_in.csv', 'w') as cleaned_file:
+	with open('Data/'+filename+'/diff-'+filename+'-bikes_in.csv', 'w') as cleaned_file:
 	    a = csv.writer(cleaned_file, delimiter=',')
 	    data = in_data
 	    a.writerows(data)
 
-	with open('Data/diff-'+filename+'-bikes_out.csv', 'w') as cleaned_file:
+	with open('Data/'+filename+'/diff-'+filename+'-bikes_out.csv', 'w') as cleaned_file:
 	    a = csv.writer(cleaned_file, delimiter=',')
 	    data = out_data
 	    a.writerows(data)
 
-	with open('Data/percent-diff-'+filename+'-bikes_in.csv', 'w') as cleaned_file:
+	with open('Data/'+filename+'/percent-diff-'+filename+'-bikes_in.csv', 'w') as cleaned_file:
 	    a = csv.writer(cleaned_file, delimiter=',')
 	    data = g
 	    a.writerows(data)
 
-	with open('Data/percent-diff-'+filename+'-bikes_out.csv', 'w') as cleaned_file:
+	with open('Data/'+filename+'/percent-diff-'+filename+'-bikes_out.csv', 'w') as cleaned_file:
 	    a = csv.writer(cleaned_file, delimiter=',')
 	    data = h
 	    a.writerows(data)
@@ -176,22 +176,57 @@ startProgress("Processing data") # Start progress bar
 in_matrix_raw = initialize_matrix()
 out_matrix_raw = initialize_matrix()
 
+in_matrix_1 = initialize_matrix()
+out_matrix_1 = initialize_matrix()
+
 in_matrix_2 = initialize_matrix()
 out_matrix_2 = initialize_matrix()
 
 in_matrix_3 = initialize_matrix()
 out_matrix_3 = initialize_matrix()
 
+in_matrix_4 = initialize_matrix()
+out_matrix_4 = initialize_matrix()
+
+in_matrix_5 = initialize_matrix()
+out_matrix_5 = initialize_matrix()
+
 in_matrix_6 = initialize_matrix()
 out_matrix_6 = initialize_matrix()
 
-processData("Data/8-diffprivTest/0.2-hubway-synthetic-our.csv", in_matrix_2, out_matrix_2, False, row_counter)
-processData("Data/8-diffprivTest/0.3-hubway-synthetic-our.csv", in_matrix_3, out_matrix_3, False, row_counter)
-processData("Data/8-diffprivTest/0.6-hubway-synthetic-our.csv", in_matrix_6, out_matrix_6, False, row_counter)
-processData("Data/hubway-original_post2012/trips_post2012_3iqr.csv", in_matrix_raw, out_matrix_raw, True, row_counter)
+in_matrix_7 = initialize_matrix()
+out_matrix_7 = initialize_matrix()
+
+in_matrix_8 = initialize_matrix()
+out_matrix_8 = initialize_matrix()
+
+in_matrix_9 = initialize_matrix()
+out_matrix_9 = initialize_matrix()
+
+in_matrix_10 = initialize_matrix()
+out_matrix_10 = initialize_matrix()
+
+processData("Data/hubway-syn-data/0.1-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.2-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.3-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.4-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.5-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.6-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.7-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.8-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.9-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/1.0-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/hubway-error-free.data", in_matrix_raw, out_matrix_raw, True, row_counter)
 
 endProgress() # Finish progress bar
 
+matrixCSV("0.1", in_matrix_1, out_matrix_1, in_matrix_raw, out_matrix_raw)
 matrixCSV("0.2", in_matrix_2, out_matrix_2, in_matrix_raw, out_matrix_raw)
 matrixCSV("0.3", in_matrix_3, out_matrix_3, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.4", in_matrix_4, out_matrix_4, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.5", in_matrix_5, out_matrix_5, in_matrix_raw, out_matrix_raw)
 matrixCSV("0.6", in_matrix_6, out_matrix_6, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.7", in_matrix_7, out_matrix_7, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.8", in_matrix_8, out_matrix_8, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.9", in_matrix_9, out_matrix_9, in_matrix_raw, out_matrix_raw)
+matrixCSV("1.0", in_matrix_10, out_matrix_10, in_matrix_raw, out_matrix_raw)

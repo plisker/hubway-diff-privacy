@@ -128,16 +128,16 @@ file = ""
 
 if raw:
 	print("Raw data will be analyzed!")
-	file = "Data/hubway-original_post2012/trips_post2012_3iqr.csv"
+	file = "Data/hubway-syn-data/hubway-error-free.data"
 	filename = "raw"
 
 while not raw:
-	synthetic_file = raw_input("Which synthetic data would you like to analyze? 0.2, 0.3, or 0.6? ")
-	if synthetic_file not in ["0.2", "0.3", "0.6"]:
+	synthetic_file = raw_input("Which synthetic data would you like to analyze? 0.1, 0.2, 0.3, ... 0.8, 0.9, 1.0? ")
+	if synthetic_file not in ["0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0"]:
 		print("That is not an option. Please try again!")
 	else:
-		file = "Data/8-diffprivTest/"+synthetic_file+"-hubway-synthetic-our.csv"
-		filename = synthetic_file+"_synthetic"
+		file = "Data/hubway-syn-data/"+synthetic_file+"-1-hubway-synthetic-our.data"
+		filename = synthetic_file
 		break
 startProgress("Processing data")
 
@@ -149,16 +149,17 @@ with open(file, 'rb') as csvfile:
 	for row in trips:
 		if raw:
 			try:
-				start_station = int(row[5]) # Get start station ID number
-				end_station = int(row[7]) # Get end station ID number
+				start_station = int(row[0]) # Get start station ID number
+				end_station = int(row[1]) # Get end station ID number
 
 				in_stations_represented.append(end_station)
 				out_stations_represented.append(start_station)
 
-				start_time_string = row[4] # Get start date and time
-				end_time_string = row[6] # Get end date and time
-				start_datetime = datetime.strptime(start_time_string, "%Y-%m-%d %H:%M:%S") # Convert date and time to datetime format
-				end_datetime = datetime.strptime(end_time_string, "%m/%d/%Y %H:%M:%S") # Convert date and time to datetime format
+				start_time_string = row[2] # Get start date and time
+				end_time_string = row[4] # Get end date and time
+				
+				start_datetime = datetime.strptime(start_time_string, " %Y-%m-%d %H:%M:%S") # Convert date and time to datetime format
+				end_datetime = datetime.strptime(end_time_string, " %Y-%m-%d %H:%M:%S") # Convert date and time to datetime format
 			except:
 				continue # If error (e.g. if header row, or if some information is missing, go to next row)
 		
@@ -198,8 +199,8 @@ with open(file, 'rb') as csvfile:
 in_date_set = set(in_dates) # Create set to get number of unique dates for the sake of creating averages
 out_date_set = set(out_dates)
 
-# average_matrix(in_matrix, len(in_date_set))
-# average_matrix(out_matrix, len(out_date_set))
+average_matrix(in_matrix, len(in_date_set))
+average_matrix(out_matrix, len(out_date_set))
 
 endProgress() # Finish progress bar
 
@@ -238,12 +239,12 @@ for station in SET_OF_STATIONS:
 	out_data.append(leave)
 
 # Start writing the CSV without outliers
-with open('Data/'+filename+'-bikes_in.csv', 'w') as cleaned_file:
+with open('Data/'+filename+'/'+filename+'-bikes_in.csv', 'w') as cleaned_file:
     a = csv.writer(cleaned_file, delimiter=',')
     data = in_data
     a.writerows(data)
 
-with open('Data/'+filename+'-bikes_out.csv', 'w') as cleaned_file:
+with open('Data/'+filename+'/'+filename+'-bikes_out.csv', 'w') as cleaned_file:
     a = csv.writer(cleaned_file, delimiter=',')
     data = out_data
     a.writerows(data)
