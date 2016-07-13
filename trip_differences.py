@@ -76,18 +76,33 @@ def processData(file, inMatrix, outMatrix, raw, counter):
 			percentage = (counter/float(4*number_of_trips))*100
 			progress(percentage)
 
-def writeCSV(filename, inMatrix, outMatrix, rawIn, rawOut):
+def divideEntries(numerator, denominator):
+	a = initialize_matrix()
+
+	for i in range(STATIONS):
+		for j in range(STATIONS):
+			denom = denominator[i][j]
+			if denom != 0:
+				a[i][j] = int(100*(numerator[i][j] / float(denom)))
+
+	return a
+
+def matrixCSV(filename, inMatrix, outMatrix, rawIn, rawOut):
+
 	a = np.matrix(inMatrix)
 	b = np.matrix(outMatrix)
 
 	c = np.matrix(rawIn)
 	d = np.matrix(rawOut)
 
-	e = c-a
-	f = d-b
+	e = c-a # In
+	f = d-b # Out
 
 	in_data = e.tolist()
 	out_data = f.tolist()
+
+	g = divideEntries(in_data, rawIn)
+	h = divideEntries(out_data, rawOut)
 
 	i = 0
 	for row in in_data:
@@ -101,8 +116,22 @@ def writeCSV(filename, inMatrix, outMatrix, rawIn, rawOut):
 		del row[-1]
 		i += 1
 
+	i = 0
+	for row in g:
+		row.insert(0, i)
+		del row[-1]
+		i += 1
+
+	i = 0
+	for row in h:
+		row.insert(0, i)
+		del row[-1]
+		i += 1
+
 	in_data.insert(0, stationList)
 	out_data.insert(0, stationList)
+	g.insert(0, stationList)
+	h.insert(0, stationList)
 
 	with open('Data/diff-'+filename+'-bikes_in.csv', 'w') as cleaned_file:
 	    a = csv.writer(cleaned_file, delimiter=',')
@@ -112,6 +141,16 @@ def writeCSV(filename, inMatrix, outMatrix, rawIn, rawOut):
 	with open('Data/diff-'+filename+'-bikes_out.csv', 'w') as cleaned_file:
 	    a = csv.writer(cleaned_file, delimiter=',')
 	    data = out_data
+	    a.writerows(data)
+
+	with open('Data/percent-diff-'+filename+'-bikes_in.csv', 'w') as cleaned_file:
+	    a = csv.writer(cleaned_file, delimiter=',')
+	    data = g
+	    a.writerows(data)
+
+	with open('Data/percent-diff-'+filename+'-bikes_out.csv', 'w') as cleaned_file:
+	    a = csv.writer(cleaned_file, delimiter=',')
+	    data = h
 	    a.writerows(data)
 
 # Progress bar with credit to http://stackoverflow.com/a/6169274 #
@@ -153,6 +192,6 @@ processData("Data/hubway-original_post2012/trips_post2012_3iqr.csv", in_matrix_r
 
 endProgress() # Finish progress bar
 
-writeCSV("0.2", in_matrix_2, out_matrix_2, in_matrix_raw, out_matrix_raw)
-writeCSV("0.3", in_matrix_3, out_matrix_3, in_matrix_raw, out_matrix_raw)
-writeCSV("0.6", in_matrix_6, out_matrix_6, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.2", in_matrix_2, out_matrix_2, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.3", in_matrix_3, out_matrix_3, in_matrix_raw, out_matrix_raw)
+matrixCSV("0.6", in_matrix_6, out_matrix_6, in_matrix_raw, out_matrix_raw)
