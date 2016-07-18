@@ -82,19 +82,12 @@ def divideEntries(numerator, denominator):
 	for i in range(STATIONS):
 		for j in range(STATIONS):
 			denom = denominator[i][j]
-			num = numerator[i][j]
 			if denom != 0:
-				a[i][j] = int((100*(num/float(denom))))
+				a[i][j] = int(100*(numerator[i][j] / float(denom)))
 
 	return a
 
 def matrixCSV(filename, inMatrix, outMatrix, rawIn, rawOut):
-	# rawIn_copy = copy.deepcopy(rawIn)
-	# rawOut_copy = copy.deepcopy(rawOut)
-
-	# inMatrix_copy = copy.deepcopy(inMatrix)
-	# outMatrix_copy = copy.deepcopy(outMatrix)
-
 
 	a = np.matrix(inMatrix)
 	b = np.matrix(outMatrix)
@@ -213,16 +206,16 @@ out_matrix_9 = initialize_matrix()
 in_matrix_10 = initialize_matrix()
 out_matrix_10 = initialize_matrix()
 
-processData("Data/hubway-syn-data/0.1-1-hubway-synthetic-our.data", in_matrix_1, out_matrix_1, False, row_counter)
+processData("Data/hubway-syn-data/0.1-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
 processData("Data/hubway-syn-data/0.2-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
-processData("Data/hubway-syn-data/0.3-1-hubway-synthetic-our.data", in_matrix_3, out_matrix_3, False, row_counter)
-processData("Data/hubway-syn-data/0.4-1-hubway-synthetic-our.data", in_matrix_4, out_matrix_4, False, row_counter)
-processData("Data/hubway-syn-data/0.5-1-hubway-synthetic-our.data", in_matrix_5, out_matrix_5, False, row_counter)
-processData("Data/hubway-syn-data/0.6-1-hubway-synthetic-our.data", in_matrix_6, out_matrix_6, False, row_counter)
-processData("Data/hubway-syn-data/0.7-1-hubway-synthetic-our.data", in_matrix_7, out_matrix_7, False, row_counter)
-processData("Data/hubway-syn-data/0.8-1-hubway-synthetic-our.data", in_matrix_8, out_matrix_8, False, row_counter)
-processData("Data/hubway-syn-data/0.9-1-hubway-synthetic-our.data", in_matrix_9, out_matrix_9, False, row_counter)
-processData("Data/hubway-syn-data/1.0-1-hubway-synthetic-our.data", in_matrix_10, out_matrix_10, False, row_counter)
+processData("Data/hubway-syn-data/0.3-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.4-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.5-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.6-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.7-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.8-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/0.9-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
+processData("Data/hubway-syn-data/1.0-1-hubway-synthetic-our.data", in_matrix_2, out_matrix_2, False, row_counter)
 processData("Data/hubway-syn-data/hubway-error-free.data", in_matrix_raw, out_matrix_raw, True, row_counter)
 
 endProgress() # Finish progress bar
