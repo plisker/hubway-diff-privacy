@@ -77,7 +77,4 @@ for file in files:
 
 endProgress() # Finish progress bar
 
-print data_in[0][0]
-print data_in[1][0]
-
-# print r_squared(data_in[0][1], data_in[1][1])
+print r_squared(data_in[0][0], data_in[1][0])
