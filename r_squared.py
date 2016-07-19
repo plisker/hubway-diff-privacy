@@ -1,6 +1,6 @@
 # ///////////////////////////////////////
 # /*								   */
-# /*          Trip Differences         */
+# /*                R^2                */
 # /*            Paul Lisker            */
 # /*           June-July 2016          */
 # /*	   							   */
@@ -10,6 +10,7 @@ import numpy as np
 import csv
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
+from scipy import stats
 import sys
 import copy
 
