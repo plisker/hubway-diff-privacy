@@ -39,12 +39,20 @@ def importCSV(file):
 	with open(file, 'rb') as csvfile:
 		trips = csv.reader(csvfile)
 		for station in trips:
-			station_id = station[0]
+			try:
+				station_id = int(station[0])
+			except:
+				continue
 			station_ids.append(station_id)
 			del station[0]
 
-			data.append(station)
 
+			try:
+				row = [float(i) for i in station]
+			except:
+				"Error! Be aware..."
+
+			data.append(row)
 
 	return data
 
@@ -69,5 +77,7 @@ for file in files:
 
 endProgress() # Finish progress bar
 
-print data_in[0][0][0]
-print r_squared(data_in[0][1], data_in[1][1])
+print data_in[0][0]
+print data_in[1][0]
+
+# print r_squared(data_in[0][1], data_in[1][1])
