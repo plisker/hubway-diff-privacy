@@ -66,7 +66,10 @@ def plot_station(station_id, bikes_in, bikes_out):
 
 	plt.xlabel('Hour of Day')
 	plt.ylabel('Number of trips')
-	plt.title("Number of Trips per Hour")
+	if raw:
+		plt.title("Number of Trips per Hour: Raw Data, Station "+str(station_id))
+	else:
+		plt.title("Number of Trips per Hour: Epsilon "+str(synthetic_file)+", Station "+str(station_id))
 	plt.grid(True)
 
 	plt.show()

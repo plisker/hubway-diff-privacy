@@ -146,6 +146,9 @@ for i in range(len(results_in[i])):
 	plt.plot(x_axis, to_plot, '.')
 	plt.plot(x_axis, new_y, '-')
 
+plt.xlabel('Epsilon Value')
+plt.ylabel('R^2')
+plt.title("R^2 vs Epsilon Values per Station: Arriving Trips")
 plt.axis([0, 1.1, 0, 1.1])
 plt.show()
 
@@ -165,6 +168,9 @@ for i in range(len(results_out[i])):
 	plt.plot(x_axis, to_plot, '.')
 	plt.plot(x_axis, new_y, '-')
 
+plt.xlabel('Epsilon Value')
+plt.ylabel('R^2')
+plt.title("R^2 vs Epsilon Values per Station: Outgoing Trips")
 plt.axis([0, 1.1, 0, 1.1])
 plt.show()
 
