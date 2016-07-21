@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 from scipy import stats
 import sys
 import copy
-from data_analysis import DataProcessing
 
 def importCSV(file):
 	data = []
