@@ -14,6 +14,18 @@ import sys
 import copy
 from data_analysis import GraphTrips
 
+def printStatistics(data):
+	print("")
+	print("Let's start with some statistics:")
+	print("The number of trips is "+str(data.number_of_trips))
+	print("The number of days for which there are outbound trips are "+str(len(data.out_date_set)))
+	print("The number of days for which there are inbound trips are "+str(len(data.in_date_set)))
+	print("Outgoing stations not represented in the data are: ")
+	print(list(data.out_sets_missing))
+	print("Incoming stations not represented in the data are: ")
+	print(list(data.in_sets_missing))
+	print("")
+
 def main():
 
 	analyzeData = GraphTrips()
@@ -21,17 +33,7 @@ def main():
 	analyzeData.user_input()
 	analyzeData.analysis()
 	
-
-	print("")
-	print("Let's start with some statistics:")
-	print("The number of trips is "+str(analyzeData.number_of_trips))
-	print("The number of days for which there are outbound trips are "+str(len(analyzeData.out_date_set)))
-	print("The number of days for which there are inbound trips are "+str(len(analyzeData.in_date_set)))
-	print("Outgoing stations not represented in the data are: ")
-	print(list(analyzeData.out_sets_missing))
-	print("Incoming stations not represented in the data are: ")
-	print(list(analyzeData.in_sets_missing))
-	print("")
+	# printStatistics(analyzeData)
 
 	in_data = [["",0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]]
 	out_data = [["",0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]]
