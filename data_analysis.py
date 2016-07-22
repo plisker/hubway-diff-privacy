@@ -14,17 +14,21 @@ import sys
 import copy
 
 class GraphTrips(object):
-	"""docstring for GraphTrips"""
 	def __init__(self, raw=True, filename="raw", file="Data/hubway-syn-data/hubway-error-free.data", synthetic_file="0.0"):
 		super(GraphTrips, self).__init__()
 		self.STATIONS = 145+1 # So as to 1-index
 		self.HOURS = 24 # So as to have first number be the row index
 		self.SET_OF_STATIONS = set([3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145])
+		self.x_axis_hours = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
 		self.raw = raw
 		self.number_of_trips = 0
+		self.in_data = [["",0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]]
+		self.out_data = [["",0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]]
 		self.filename = filename
 		self.file = file
 		self.synthetic_file = synthetic_file
+		self.analysis()
+
 		
 	def initialize_matrix(self):
 		matrix = []
@@ -130,6 +134,8 @@ class GraphTrips(object):
 		self.in_sets_missing = self.SET_OF_STATIONS - self.in_station_set
 		self.out_sets_missing = self.SET_OF_STATIONS - self.out_station_set
 
+		self.output_csv()
+
 		self.endProgress()
 
 	# Used to set "file", "filename", and maybe "synthetic_file" via terminal
@@ -163,7 +169,7 @@ class GraphTrips(object):
 		while self.continue_running:
 			try:
 				station = input("What station do you want to plot? ")
-				self.plot_station(station, self.in_matrix, self.out_matrix)
+				self.plot_station(station)
 			except:
 				print("That isn't a valid number. Please try again!")
 				continue
@@ -173,37 +179,53 @@ class GraphTrips(object):
 			else:
 				break
 
+	def output_csv(self):
+		for station in self.SET_OF_STATIONS:
+				try:
+					arrive, leave = self.station_data(station)
+				except:
+					print(station)
+					continue
+
+				arrive.insert(0, station)
+				leave.insert(0, station)
+
+				self.in_data.append(arrive)
+				self.out_data.append(leave)
+
+		# Start writing the CSV without outliers
+		with open('Data/'+self.filename+'/'+self.filename+'-bikes_in.csv', 'w') as cleaned_file:
+			a = csv.writer(cleaned_file, delimiter=',')
+			data = self.in_data
+			a.writerows(data)
+
+		with open('Data/'+self.filename+'/'+self.filename+'-bikes_out.csv', 'w') as cleaned_file:
+			a = csv.writer(cleaned_file, delimiter=',')
+			data = self.out_data
+			a.writerows(data)
+
 	def station_data(self, station_id):
 		station_out = self.out_matrix[station_id]
-		del station_out[-1]
-
 		station_in = self.in_matrix[station_id]
-		del station_in[-1]
 
 		a = copy.deepcopy(station_in)
 		b = copy.deepcopy(station_out)
 
-		x = (a, b)
+		del a[-1]
+		del b[-1]
 
-		station_out.append(station_id)
-		station_in.append(station_id)
+		x = (a, b)
 
 		return x
 		
 	def plot_station(self, station_id):
-		hours_axis = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+		station_in, station_out = self.station_data(station_id)
 
-		station_out = self.out_matrix[station_id]
-		del station_out[-1]
 		print("Bikes out: ", station_out)
-		plt.plot(hours_axis, station_out)
-		station_out.append(station_id)
+		plt.plot(self.x_axis_hours, station_out)
 
-		station_in = self.in_matrix[station_id]
-		del station_in[-1]
 		print("Bikes in: ", station_in)
-		plt.plot(hours_axis, station_in)
-		station_in.append(station_id)
+		plt.plot(self.x_axis_hours, station_in)
 
 		plt.xlabel('Hour of Day')
 		plt.ylabel('Number of trips')
@@ -227,7 +249,7 @@ class GraphTrips(object):
 
 	def statistics(self):
 		print("")
-		print("Let's start with some statistics:")
+		print("Some descriptory statistics:")
 		if self.raw:
 			print("Data analyzed: raw data")
 		else:
