@@ -25,6 +25,7 @@ def plot(x, y, data_titles, station_id, direction):
 
 	plt.xlabel('Hour of Day')
 	plt.ylabel('Number of trips')
+	plt.legend(loc='upper right')
 	if direction:
 		plt.title("Number of Trips per Hour, Bikes In: {"+titles+"}, Station "+str(station_id))
 	else:
