@@ -222,15 +222,15 @@ class GraphTrips(object):
 		station_in, station_out = self.station_data(station_id)
 
 		print("Bikes out: ", station_out)
-		plt.plot(self.x_axis_hours, station_out, label="Outgoing trips")
+		plt.plot(self.x_axis_hours, station_out, label="Out")
 
 		print("Bikes in: ", station_in)
-		plt.plot(self.x_axis_hours, station_in, label="Incoming trips")
+		plt.plot(self.x_axis_hours, station_in, label="In")
 
 		plt.xlabel('Hour of Day')
 		plt.ylabel('Number of trips') 
 		plt.legend()
-		
+
 		if self.raw:
 			plt.title("Number of Trips per Hour: Raw Data, Station "+str(station_id))
 		else:
