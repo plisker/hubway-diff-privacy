@@ -51,18 +51,4 @@ def main():
 	    data = out_data
 	    a.writerows(data)
 
-	continue_running = True
-	while continue_running:
-		try:
-			station = input("What station do you want to plot? ")
-			rawData.plot_station(station, rawData.in_matrix, rawData.out_matrix)
-		except:
-			print("That isn't a valid number. Please try again!")
-			continue
-		test = rawData.plot_again()
-		if test is 0:
-			continue
-		else:
-			break
-
 main()
