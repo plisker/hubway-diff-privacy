@@ -18,8 +18,10 @@ def plot(x, y, data_titles, station_id, direction):
 	titles = ", "
 	titles = titles.join(data_titles)
 
+	counter = 0
 	for row in y:
-		plt.plot(x, row, label=data_titles[row])
+		plt.plot(x, row, label=data_titles[counter])
+		counter += 1
 
 	plt.xlabel('Hour of Day')
 	plt.ylabel('Number of trips')
