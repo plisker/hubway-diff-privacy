@@ -29,7 +29,6 @@ class GraphTrips(object):
 		self.synthetic_file = synthetic_file
 		self.analysis()
 
-		
 	def initialize_matrix(self):
 		matrix = []
 		for i in range(self.STATIONS):
@@ -282,3 +281,6 @@ class GraphTrips(object):
 	def endProgress(self):
 		sys.stdout.write("#" * (40 - progress_x) + "]\n")
 		sys.stdout.flush()
+
+
+		
