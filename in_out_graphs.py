@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import sys
 import copy
 from data_analysis import GraphTrips
+from trip_statistics import TripStatistics
 import stats
 
 def plot(x, y, data_titles, station_id, direction):
