@@ -84,7 +84,7 @@ class TripStatistics(object):
 		plt.xlabel('Stations')
 		plt.ylabel('R^2')
 		plt.title("R^2 vs Station: Arriving Trips")
-		plt.axis([0, 150, 0, 1.1])
+		plt.axis([0, 150, 0, 1])
 		plt.show()
 
 		for i in range(len(self.r_squared_out)):
@@ -93,7 +93,7 @@ class TripStatistics(object):
 		plt.xlabel('Stations')
 		plt.ylabel('R^2')
 		plt.title("R^2 vs Station: Arriving Trips")
-		plt.axis([0, 150, 0, 1.1])
+		plt.axis([0, 150, 0, 1])
 		plt.show()
 
 

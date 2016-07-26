@@ -29,7 +29,7 @@ class GraphTrips(object):
 		self.synthetic_file = synthetic_file
 		self.analysis()
 
-	def initialize_matrix(self):
+	def initialize_full_matrix(self):
 		matrix = []
 		for i in range(self.STATIONS):
 			row = []
@@ -39,14 +39,24 @@ class GraphTrips(object):
 			matrix.append(row)
 		return matrix
 
+	def initialize_small_matrix(self):
+		matrix = [0 for i in range(self.HOURS)]
+		return matrix
+
 	def average_matrix(self, matrix, denominator):
 		for i in range(self.STATIONS):
 			for j in range(self.HOURS):
 					matrix[i][j] = (matrix[i][j])/float(denominator)
 
+	def average_matrix_small(self, matrix, denominator):
+		for i in range(self.HOURS):
+				matrix[i] = (matrix[i])/float(denominator)
+
 	def analysis(self):
-		self.in_matrix = self.initialize_matrix()
-		self.out_matrix = self.initialize_matrix()
+		self.in_matrix = self.initialize_full_matrix()
+		self.out_matrix = self.initialize_full_matrix()
+		self.in_matrix_small = self.initialize_small_matrix()
+		self.out_matrix_small = self.initialize_small_matrix()
 		self.in_stations_represented = []
 		self.out_stations_represented = []
 		self.in_dates = []
@@ -110,6 +120,9 @@ class GraphTrips(object):
 						self.out_matrix[start_station][start_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
 						self.in_matrix[end_station][end_datetime.hour] += 1 # Increase counter to appropriate spot in tracking matrix
 
+						self.out_matrix_small[start_datetime.hour] += 1
+						self.in_matrix_small[end_datetime.hour] += 1
+
 						start_date = str(datetime.strftime(start_datetime, "%x"))
 						end_date = str(datetime.strftime(end_datetime, "%x"))
 
@@ -126,6 +139,9 @@ class GraphTrips(object):
 
 		self.average_matrix(self.in_matrix, len(self.in_date_set))
 		self.average_matrix(self.out_matrix, len(self.out_date_set))
+
+		self.average_matrix_small(self.in_matrix_small, len(self.in_date_set))
+		self.average_matrix_small(self.out_matrix_small, len(self.out_date_set))
 
 		self.in_station_set = set(self.in_stations_represented)
 		self.out_station_set = set(self.out_stations_represented)
@@ -192,7 +208,7 @@ class GraphTrips(object):
 				self.in_data.append(arrive)
 				self.out_data.append(leave)
 
-		# Start writing the CSV without outliers
+		# Write CSV per station
 		with open('Data/'+self.filename+'/'+self.filename+'-bikes_in.csv', 'w') as cleaned_file:
 			a = csv.writer(cleaned_file, delimiter=',')
 			data = self.in_data
@@ -202,6 +218,17 @@ class GraphTrips(object):
 			a = csv.writer(cleaned_file, delimiter=',')
 			data = self.out_data
 			a.writerows(data)
+
+		# Write CSV for general
+		with open('Data/'+self.filename+'/'+self.filename+'-total-bikes_in.csv', 'w') as cleaned_file:
+			a = csv.writer(cleaned_file, delimiter=',')
+			data = self.in_matrix_small
+			a.writerow(data)
+
+		with open('Data/'+self.filename+'/'+self.filename+'-total-bikes_out.csv', 'w') as cleaned_file:
+			a = csv.writer(cleaned_file, delimiter=',')
+			data = self.out_matrix_small
+			a.writerow(data)
 
 	def station_data(self, station_id):
 		station_out = self.out_matrix[station_id]

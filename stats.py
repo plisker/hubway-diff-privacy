@@ -8,6 +8,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy import stats
 from trip_statistics import TripStatistics
 
 # x_axis = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
@@ -54,9 +55,16 @@ from trip_statistics import TripStatistics
 # plt.axis([0, 1.1, 0, 1.1])
 # plt.show()
 
+def r_squared(x, y):
+	slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+	return r_value**2
+
+
 def main():
+	raw = TripStatistics()
 	one = TripStatistics("0.1")
 	print one.r_squared_in[0]
 	one.plotAll()
+
 
 main()
