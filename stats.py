@@ -63,8 +63,8 @@ def r_squared(x, y):
 def main():
 	raw = TripStatistics()
 	one = TripStatistics("0.1")
-	print one.r_squared_in[0]
-	one.plotAll()
-
+	# print one.r_squared_in[0]
+	print one.r_squared_in_all
+	print one.r_squared_out_all
 
 main()

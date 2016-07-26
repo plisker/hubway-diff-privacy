@@ -21,10 +21,21 @@ class TripStatistics(object):
 		self.file = file
 		self.data_in = self.importCSV("Data/"+self.file+"/"+self.file+"-bikes_in.csv")
 		self.data_out = self.importCSV("Data/"+self.file+"/"+self.file+"-bikes_out.csv")
+
+		self.data_in_all = self.importCSVrow("Data/"+self.file+"/"+self.file+"-total-bikes_in.csv")
+		self.data_out_all = self.importCSVrow("Data/"+self.file+"/"+self.file+"-total-bikes_out.csv")
+
 		self.data_in_original = self.importCSV("Data/raw/raw-bikes_in.csv")
 		self.data_out_original = self.importCSV("Data/raw/raw-bikes_out.csv")
+
+		self.data_in_all_original = self.importCSVrow("Data/raw/raw-total-bikes_in.csv")
+		self.data_out_all_original = self.importCSVrow("Data/raw/raw-total-bikes_out.csv")		
+
+
 		self.r_squared_in = []
 		self.r_squared_out = []
+		self.r_squared_in_all = 0
+		self.r_squared_out_all = 0
 		self.analyzeTrips()
 
 	def importCSV(self, file):
@@ -51,6 +62,19 @@ class TripStatistics(object):
 
 		return data
 
+	def importCSVrow(self, file):
+		data = []
+
+		with open(file, 'rb') as csvfile:
+			trips = csv.reader(csvfile)
+
+			# Should only be one row
+			for row in trips:
+				for i in range(len(row)):
+					data.append(float(row[i]))
+
+		return data
+
 	def r_squared(self, x, y):
 		slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
 		return r_value**2
@@ -73,6 +97,9 @@ class TripStatistics(object):
 
 		self.r_squared_in = temp_in
 		self.r_squared_out = temp_out
+
+		self.r_squared_in_all = self.r_squared(self.data_in_all_original, self.data_in_all)
+		self.r_squared_out_all = self.r_squared(self.data_out_all_original, self.data_out_all)
 
 	def plotStation(self, station_id, data):
 		plt.plot(station_id, data[station_id], '.')

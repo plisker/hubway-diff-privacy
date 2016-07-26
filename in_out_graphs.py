@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import sys
 import copy
 from data_analysis import GraphTrips
+import stats
 
 def plot(x, y, data_titles, station_id, direction):
 	titles = ", "
@@ -69,15 +70,17 @@ def graphGeneral(data):
 def main():
 	rawData = GraphTrips()
 	syn1 = GraphTrips(synthetic_file="0.1")
-	syn2 = GraphTrips(synthetic_file="0.2")
-	syn3 = GraphTrips(synthetic_file="0.3")
-	syn4 = GraphTrips(synthetic_file="0.4")
-	syn5 = GraphTrips(synthetic_file="0.5")
-	syn6 = GraphTrips(synthetic_file="0.6")
-	syn7 = GraphTrips(synthetic_file="0.7")
-	syn8 = GraphTrips(synthetic_file="0.8")
-	syn9 = GraphTrips(synthetic_file="0.9")
-	syn10 = GraphTrips(synthetic_file="1.0")
+	# syn2 = GraphTrips(synthetic_file="0.2")
+	# syn3 = GraphTrips(synthetic_file="0.3")
+	# syn4 = GraphTrips(synthetic_file="0.4")
+	# syn5 = GraphTrips(synthetic_file="0.5")
+	# syn6 = GraphTrips(synthetic_file="0.6")
+	# syn7 = GraphTrips(synthetic_file="0.7")
+	# syn8 = GraphTrips(synthetic_file="0.8")
+	# syn9 = GraphTrips(synthetic_file="0.9")
+	# syn10 = GraphTrips(synthetic_file="1.0")
+
+	print stats.r_squared(rawData.in_matrix_small, syn1.in_matrix_small)
 	
 	# a = [rawData, syn1, syn10]
 
