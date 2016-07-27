@@ -219,7 +219,7 @@ class GraphTrips(object):
 			data = self.out_data
 			a.writerows(data)
 
-		# Write CSV for general
+		# Write CSV for generali
 		with open('Data/'+self.filename+'/'+self.filename+'-total-bikes_in.csv', 'w') as cleaned_file:
 			a = csv.writer(cleaned_file, delimiter=',')
 			data = self.in_matrix_small

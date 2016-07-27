@@ -13,6 +13,60 @@ from trip_statistics import TripStatistics
 
 x_axis = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 
+def graph_r_squared(x, epsilons):
+	data_in = []
+	data_out = []
+
+	for element in epsilons:
+		data_in.append(element.r_squared_in_all)
+
+	for element in epsilons:
+		data_out.append(element.r_squared_out_all)
+
+	print data_in
+	print data_out
+
+	plt.plot(x, data_in, '-', label="Incoming")
+	plt.plot(x, data_out, '-', label="Outoing")
+
+	plt.xlabel('Epsilon Value')
+	plt.ylabel('R^2')
+	plt.title("R^2 vs Epsilon Values")
+	plt.axis([0.0, 1.1, 0.7, 1.1])
+	plt.legend(loc='best')
+	plt.show()
+
+def r_squared(x, y):
+	slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+	return r_value**2
+
+
+def main():
+	raw = TripStatistics()
+	stat1 = TripStatistics("0.1")
+	stat2 = TripStatistics("0.2")
+	stat3 = TripStatistics("0.3")
+	stat4 = TripStatistics("0.4")
+	stat5 = TripStatistics("0.5")
+	stat6 = TripStatistics("0.6")
+	stat7 = TripStatistics("0.7")
+	stat8 = TripStatistics("0.8")
+	stat9 = TripStatistics("0.9")
+	stat10 = TripStatistics("1.0")
+
+	stat1.plotAll()
+
+	data = [stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8, stat9, stat10]
+
+	graph_r_squared(x_axis, data)
+
+main()
+
+
+
+
+
+
 # for i in range(len(results_in[i])):
 # 	to_plot = []
 # 	for j in range(10):
@@ -54,53 +108,5 @@ x_axis = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 # plt.title("R^2 vs Epsilon Values per Station: Outgoing Trips")
 # plt.axis([0, 1.1, 0, 1.1])
 # plt.show()
-
-def graph_r_squared(epsilons):
-	data_in = []
-	data_out = []
-
-	for element in epsilons:
-		data_in.append(element.r_squared_in_all)
-
-	for element in epsilons:
-		data_out.append(element.r_squared_out_all)
-
-	print data_in
-	print data_out
-
-	plt.plot(x_axis, data_in, '-', label="Incoming")
-	plt.plot(x_axis, data_out, '-', label="Outoing")
-
-	plt.xlabel('Epsilon Value')
-	plt.ylabel('R^2')
-	plt.title("R^2 vs Epsilon Values")
-	plt.axis([0.0, 1.1, 0.7, 1.1])
-	plt.legend(loc='best')
-	plt.show()
-
-def r_squared(x, y):
-	slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
-	return r_value**2
-
-
-def main():
-	raw = TripStatistics()
-	stat1 = TripStatistics("0.1")
-	stat2 = TripStatistics("0.2")
-	stat3 = TripStatistics("0.3")
-	stat4 = TripStatistics("0.4")
-	stat5 = TripStatistics("0.5")
-	stat6 = TripStatistics("0.6")
-	stat7 = TripStatistics("0.7")
-	stat8 = TripStatistics("0.8")
-	stat9 = TripStatistics("0.9")
-	stat10 = TripStatistics("1.0")
-
-	data = [stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8, stat9, stat10]
-
-	graph_r_squared(data)
-
-main()
-
 
 

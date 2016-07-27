@@ -79,13 +79,11 @@ def main():
 	# syn7 = GraphTrips(synthetic_file="0.7")
 	# syn8 = GraphTrips(synthetic_file="0.8")
 	# syn9 = GraphTrips(synthetic_file="0.9")
-	# syn10 = GraphTrips(synthetic_file="1.0")
-
-	print stats.r_squared(rawData.in_matrix_small, syn1.in_matrix_small)
+	syn10 = GraphTrips(synthetic_file="1.0")
 	
-	# a = [rawData, syn1, syn10]
+	a = [rawData, syn1, syn10]
 
-	# graphData(a, 14)
+	graphData(a, 14)
 
 
 main()
