@@ -54,11 +54,13 @@ def main():
 	stat9 = TripStatistics("0.9")
 	stat10 = TripStatistics("1.0")
 
-	stat1.plotAll()
 
 	data = [stat1, stat2, stat3, stat4, stat5, stat6, stat7, stat8, stat9, stat10]
 
 	graph_r_squared(x_axis, data)
+
+	stat1.plotAll()
+
 
 main()
 

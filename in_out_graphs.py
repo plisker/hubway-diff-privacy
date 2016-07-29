@@ -14,7 +14,7 @@ import sys
 import copy
 from data_analysis import GraphTrips
 from trip_statistics import TripStatistics
-import stats
+# import stats
 
 def plot(x, y, data_titles, station_id, direction):
 	titles = ", "
@@ -80,10 +80,27 @@ def main():
 	# syn8 = GraphTrips(synthetic_file="0.8")
 	# syn9 = GraphTrips(synthetic_file="0.9")
 	syn10 = GraphTrips(synthetic_file="1.0")
+
+	raw = TripStatistics()
+	stat1 = TripStatistics("0.1")
+	stat2 = TripStatistics("0.2")
+	stat3 = TripStatistics("0.3")
+	stat4 = TripStatistics("0.4")
+	stat5 = TripStatistics("0.5")
+	stat6 = TripStatistics("0.6")
+	stat7 = TripStatistics("0.7")
+	stat8 = TripStatistics("0.8")
+	stat9 = TripStatistics("0.9")
+	stat10 = TripStatistics("1.0")
 	
 	a = [rawData, syn1, syn10]
 
 	graphData(a, 14)
+	graphData(a, 90)
+	graphData(a, 40)
+	graphData(a, 123)
+
+
 
 
 main()
