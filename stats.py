@@ -59,7 +59,7 @@ def main():
 
 	graph_r_squared(x_axis, data)
 
-	stat1.plotAll()
+	stat10.plotAll()
 
 
 main()

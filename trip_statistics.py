@@ -110,7 +110,7 @@ class TripStatistics(object):
 
 		plt.xlabel('Stations')
 		plt.ylabel('R^2')
-		plt.title("R^2 vs Station: Arriving Trips")
+		plt.title("R^2 vs Station (Epsilon "+self.file+"): Arriving Trips")
 		plt.axis([0, 150, 0, 1])
 		plt.show()
 
@@ -119,7 +119,7 @@ class TripStatistics(object):
 
 		plt.xlabel('Stations')
 		plt.ylabel('R^2')
-		plt.title("R^2 vs Station: Arriving Trips")
+		plt.title("R^2 vs Station (Epsilon "+self.file+"): Outgoing Trips")
 		plt.axis([0, 150, 0, 1])
 		plt.show()
 
