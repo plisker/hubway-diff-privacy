@@ -21,12 +21,13 @@ number_of_trips = 0
 
 class Routes(object):
 	"""docstring for Routes"""
-	def __init__(self, arg):
+	def __init__(self, file):
 		super(Routes, self).__init__()
-		self.arg = arg
+		self.file = file
+		self.matrix = self.initialize_matrix()
 		
 
-	def initialize_matrix():
+	def initialize_matrix(self):
 		matrix = []
 		for i in range(STATIONS):
 			row = []
@@ -36,8 +37,13 @@ class Routes(object):
 			matrix.append(row)
 		return matrix
 
+	def processData(self):
+		with open("Data/"+self.file+"/"+self.file+"-bikes_trip.csv ", 'rb') as csvfile:
+			trips = csv.reader(csvfile)
+			for row in trips
+				
 
-	def processData(file, tripMatrix, raw, counter):
+	def processData_old(self, file, tripMatrix, raw, counter):
 		with open(file, 'rb') as csvfile:
 			number_of_trips = sum(1 for line in csvfile)
 			csvfile.seek(0) # Go back to top of file for next loop
@@ -78,7 +84,7 @@ class Routes(object):
 				percentage = (counter/float(11*number_of_trips))*100
 				progress(percentage)
 
-	def divideEntries(numerator, denominator):
+	def divideEntries(self, numerator, denominator):
 		a = initialize_matrix()
 
 		for i in range(STATIONS):
@@ -90,7 +96,7 @@ class Routes(object):
 
 		return a
 
-	def matrixCSV(filename, tripMatrix, rawOut):
+	def matrixCSV(self, filename, tripMatrix, rawOut):
 
 		tripMatrix_copy = copy.deepcopy(tripMatrix)
 
@@ -140,27 +146,27 @@ class Routes(object):
 			data = d
 			a.writerows(data)
 
-	def arrayCSV(filename, array):
+	def arrayCSV(self, filename, array):
 		with open('Data/'+filename+'/'+filename+'-bikes_trip.csv', 'w') as cleaned_file:
 			a = csv.writer(cleaned_file, delimiter=',')
 			data = array
 			a.writerows(data)
 
 	# Progress bar with credit to http://stackoverflow.com/a/6169274 #
-	def startProgress(title):
+	def startProgress(self, title):
 		global progress_x
 		sys.stdout.write(title + ": [" + "-"*40 + "]" + chr(8)*41)
 		sys.stdout.flush()
 		progress_x = 0
 
-	def progress(x):
+	def progress(self, x):
 		global progress_x
 		x = int(x * 40 // 100)
 		sys.stdout.write("#" * (x - progress_x))
 		sys.stdout.flush()
 		progress_x = x
 
-	def endProgress():
+	def endProgress(self):
 		sys.stdout.write("#" * (40 - progress_x) + "]\n")
 		sys.stdout.flush()
 
@@ -178,17 +184,17 @@ out_matrix_8 = initialize_matrix()
 out_matrix_9 = initialize_matrix()
 out_matrix_10 = initialize_matrix()
 
-processData("Data/hubway-syn-data/0.1-1-hubway-synthetic-our.data", out_matrix_1, False, row_counter)
-processData("Data/hubway-syn-data/0.2-1-hubway-synthetic-our.data", out_matrix_2, False, row_counter)
-processData("Data/hubway-syn-data/0.3-1-hubway-synthetic-our.data", out_matrix_3, False, row_counter)
-processData("Data/hubway-syn-data/0.4-1-hubway-synthetic-our.data", out_matrix_4, False, row_counter)
-processData("Data/hubway-syn-data/0.5-1-hubway-synthetic-our.data", out_matrix_5, False, row_counter)
-processData("Data/hubway-syn-data/0.6-1-hubway-synthetic-our.data", out_matrix_6, False, row_counter)
-processData("Data/hubway-syn-data/0.7-1-hubway-synthetic-our.data", out_matrix_7, False, row_counter)
-processData("Data/hubway-syn-data/0.8-1-hubway-synthetic-our.data", out_matrix_8, False, row_counter)
-processData("Data/hubway-syn-data/0.9-1-hubway-synthetic-our.data", out_matrix_9, False, row_counter)
-processData("Data/hubway-syn-data/1.0-1-hubway-synthetic-our.data", out_matrix_10, False, row_counter)
-processData("Data/hubway-syn-data/hubway-error-free.data", out_matrix_raw, True, row_counter)
+processData_old("Data/hubway-syn-data/0.1-1-hubway-synthetic-our.data", out_matrix_1, False, row_counter)
+processData_old("Data/hubway-syn-data/0.2-1-hubway-synthetic-our.data", out_matrix_2, False, row_counter)
+processData_old("Data/hubway-syn-data/0.3-1-hubway-synthetic-our.data", out_matrix_3, False, row_counter)
+processData_old("Data/hubway-syn-data/0.4-1-hubway-synthetic-our.data", out_matrix_4, False, row_counter)
+processData_old("Data/hubway-syn-data/0.5-1-hubway-synthetic-our.data", out_matrix_5, False, row_counter)
+processData_old("Data/hubway-syn-data/0.6-1-hubway-synthetic-our.data", out_matrix_6, False, row_counter)
+processData_old("Data/hubway-syn-data/0.7-1-hubway-synthetic-our.data", out_matrix_7, False, row_counter)
+processData_old("Data/hubway-syn-data/0.8-1-hubway-synthetic-our.data", out_matrix_8, False, row_counter)
+processData_old("Data/hubway-syn-data/0.9-1-hubway-synthetic-our.data", out_matrix_9, False, row_counter)
+processData_old("Data/hubway-syn-data/1.0-1-hubway-synthetic-our.data", out_matrix_10, False, row_counter)
+processData_old("Data/hubway-syn-data/hubway-error-free.data", out_matrix_raw, True, row_counter)
 
 endProgress() # Finish progress bar
 

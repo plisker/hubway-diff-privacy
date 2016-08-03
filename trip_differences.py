@@ -134,6 +134,15 @@ def matrixCSV(filename, tripMatrix, rawOut):
 	    a.writerows(data)
 
 def arrayCSV(filename, array):
+	i = 0
+	for row in array:
+		row.insert(0, i)
+		del row[-1]
+		i += 1
+
+	array.insert(0, stationList)
+
+
 	with open('Data/'+filename+'/'+filename+'-bikes_trip.csv', 'w') as cleaned_file:
 		a = csv.writer(cleaned_file, delimiter=',')
 		data = array
